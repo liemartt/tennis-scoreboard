@@ -3,8 +3,6 @@ package com.liemartt.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.UUID;
 @Entity
 @Table(name = "matches")
 @Data
@@ -12,12 +10,15 @@ import java.util.UUID;
 public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID uuid;
-    @Column(name = "player1")
+    private Long id;
+    @ManyToOne
+    @JoinColumn(name = "player1", referencedColumnName = "id")
     private Player player1;
-    @Column(name = "player2")
+    @ManyToOne
+    @JoinColumn(name = "player2", referencedColumnName = "id")
     private Player player2;
-    @Column(name = "winner")
+    @ManyToOne
+    @JoinColumn(name = "winner", referencedColumnName = "id")
     private Player winner;
 
     public Match(Player player1, Player player2, Player winner) {
