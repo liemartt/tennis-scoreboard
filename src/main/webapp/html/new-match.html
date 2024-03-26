@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tennis scoreboard</title>
+    <script src="https://kit.fontawesome.com/fd9c503804.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href = "/css/new-match.css">
+</head>
+<body>
+    <header>
+        <p>New match</p>
+    </header>
+    <main>
+        <form method="post" name = "playerNames" action="/new-match">
+            <input type="text" name="player1_name" placeholder="1 player">
+            <input type="text" name = "player2_name" placeholder="2 player">
+            <input type="submit" value="Start new match">
+        </form>
+    </main>
+    <div class="bg-image"></div>
+    <footer>
+        <p>Created by liemartt:
+            <a href = "https://github.com/liemartt"><i class="fa-brands fa-github"></i></a>
+            <a href = "https://t.me/liemartt"><i class="fa-brands fa-telegram"></i></a>
+        </p>
+    </footer>
+</body>
+</html>
