@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @Entity
-@Table(name = "players")
+@Table(name = "players", indexes = @Index(name = "nameIndex", columnList = "name"))
 @Data
 @NoArgsConstructor
 public class Player {
