@@ -40,9 +40,9 @@ public class NewMatchServlet extends HttpServlet {
         String secondPlayerName = req.getParameter("player2_name");
         Player firstPlayer = playerDAO.getPlayerByName(firstPlayerName).orElseGet(() -> playerDAO.addNewPlayer(firstPlayerName));
         Player secondPlayer = playerDAO.getPlayerByName(secondPlayerName).orElseGet(() -> playerDAO.addNewPlayer(secondPlayerName));
-        //TODO check players
+
         Match match = new Match(firstPlayer, secondPlayer);
         UUID uuid = OngoingMatchesService.addNewMatch(match);
-        System.out.println(uuid);
+        resp.sendRedirect("/match-score?uuid=" + uuid.toString());
     }
 }
