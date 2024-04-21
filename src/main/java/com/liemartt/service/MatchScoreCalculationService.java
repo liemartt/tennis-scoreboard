@@ -67,6 +67,7 @@ public class MatchScoreCalculationService {
         if (ally.getSetCounter() == 2) {
             matchScore.setFinished(true);
             matchScore.setWinner(ally);
+            matchScore.getMatch().setWinner(ally.getPlayer());
         }
     }
 
