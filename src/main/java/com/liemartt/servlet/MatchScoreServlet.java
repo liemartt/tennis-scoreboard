@@ -47,7 +47,14 @@ public class MatchScoreServlet extends HttpServlet {
         MatchScore matchScore = OngoingMatchesService.getMatch(uuid);
         Player winner = (matchScore.getPlayer1().getId().toString().equals(id) ? matchScore.getPlayer1() : matchScore.getPlayer2()).getPlayer();
         MatchScoreCalculationService calculationService = new MatchScoreCalculationService(matchScore);
+        //TODO singleton
         calculationService.addPointToPlayer(winner);
-        this.doGet(req, resp);
+        if (matchScore.isFinished()) {
+            context.setVariable("winner", matchScore.getWinner().getName());
+            context.setVariable("uuid", uuid);
+            templateEngine.process("finishedMatch", context, resp.getWriter());
+        }
+        else this.doGet(req, resp);
+
     }
 }

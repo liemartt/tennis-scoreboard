@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tennis scoreboard</title>
+    <script src="https://kit.fontawesome.com/fd9c503804.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/match-score.css">
+
+</head>
+<body>
+<header>
+    <h1 th:text = "${'Match '+uuid}">Match </h1>
+</header>
+<main>
+    <div class="bg-image"></div>
+    <div class = "scoreboard">
+        <h1 th:text = "${'Winner: '+winner}"></h1>
+    </div>
+</main>
+</body>
+</html>
