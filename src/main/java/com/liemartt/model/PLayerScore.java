@@ -48,4 +48,7 @@ public class PLayerScore {
         return player.getId();
     }
 
+    public void resetTieBreaksCounter() {
+        tieBreaksCounter = 0;
+    }
 }

@@ -30,6 +30,7 @@ public class MatchScoreCalculationService {
         else if (ally.getPointCounter() == 3 && enemy.getPointCounter() <= 2) {
             addGameToAlly();
         } else if (ally.getPointCounter() == 3 && ally.isAdvantage()) {
+            ally.setAdvantage(false);
             addGameToAlly();
         } else {
             if (enemy.isAdvantage()) enemy.setAdvantage(false);
@@ -53,6 +54,8 @@ public class MatchScoreCalculationService {
         ally.addTieBreak();
         if (ally.getTieBreaksCounter() == 7) {
             matchScore.setTieBreak(false);
+            ally.resetTieBreaksCounter();
+            enemy.resetTieBreaksCounter();
             addSetToAlly();
         }
     }
