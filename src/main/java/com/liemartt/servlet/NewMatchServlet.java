@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -38,6 +40,13 @@ public class NewMatchServlet extends HttpServlet {
 
         String firstPlayerName = req.getParameter("player1_name");
         String secondPlayerName = req.getParameter("player2_name");
+
+        if(Objects.equals(firstPlayerName, "") || Objects.equals(secondPlayerName, "")) {
+            context.setVariable("error", "Invalid player name");
+            templateEngine.process("new-match", context, resp.getWriter());
+            return;
+        }
+
         Player firstPlayer = playerDAO.getPlayerByName(firstPlayerName).orElseGet(() -> playerDAO.addNewPlayer(firstPlayerName));
         Player secondPlayer = playerDAO.getPlayerByName(secondPlayerName).orElseGet(() -> playerDAO.addNewPlayer(secondPlayerName));
 
