@@ -8,8 +8,10 @@
 </head>
 <body>
     <header>
+        <a href = "/">Home</a>
         <p>New match</p>
     </header>
+    <p th:text="${error}"></p>
     <main>
         <form method="post" name = "playerNames" action="/new-match">
             <input type="text" name="player1_name" placeholder="1 player">

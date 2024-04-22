@@ -22,6 +22,14 @@ header{
     display: flex;
     justify-content: center;
     margin-top: 2%;
+    a{
+        display: block;
+        position: absolute;
+        left: 10px;
+        top:10px;
+        text-decoration: none;
+        color: rgb(33, 102, 143);
+    }
 }
 main{
     display: flex;
