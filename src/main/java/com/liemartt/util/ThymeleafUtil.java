@@ -35,6 +35,7 @@ public class ThymeleafUtil implements ServletContextListener {
         ServletContextTemplateResolver resolver = new ServletContextTemplateResolver(servletContext);
         resolver.setPrefix("/html/");
         resolver.setSuffix(".html");
+        resolver.setCharacterEncoding("UTF-8");
         return resolver;
     }
     private static final String TEMPLATE_ENGINE_ATTR = "templateEngine";
