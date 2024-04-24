@@ -10,7 +10,7 @@
 <body>
     <header>
         <h1><a href = "/">Home</a></h1>
-        <h1 th:text = "${'Match '+uuid}">Match 230402934092</h1>
+        <h1 th:text = "${'Match '+matchScore.uuid}">Match 230402934092</h1>
     </header>
 <main>
     <div class="bg-image"></div>
@@ -37,51 +37,51 @@
                 </div>
             </div>
             <div class = "player-info">
-                <div class = "cell" th:text="${player1Name}">
+                <div class = "cell" th:text="${matchScore.player1.name}">
                     Artem
                 </div>
-                <div class = "cell" th:text="${player1TieBreaks}">
+                <div class = "cell" th:text="${matchScore.player1.tieBreaksCounter}">
                     0
                 </div>
-                <div class = "cell" th:text="${player1Sets}">
+                <div class = "cell" th:text="${matchScore.player1.setCounter}">
                     0
                 </div>
-                <div class = "cell" th:text="${player1Games}">
+                <div class = "cell" th:text="${matchScore.player1.gameCounter}">
                     0
                 </div>
-                <div class = "cell" th:text="${player1Points}">
+                <div class = "cell" th:text="${matchScore.getFormattedPoints(matchScore.player1.pointCounter)}">
                     0
                 </div>
-                <div class = "advantage" th:class="'advantage '+${player1Advantage?'active':' '}">
+                <div class = "advantage" th:class="'advantage '+${matchScore.player1.isAdvantage()?'active':' '}">
                 </div>
 
             </div>
-            
+
             <div class = "player-info">
-                <div class = "cell" th:text="${player2Name}">
-                    Vasya
+                <div class = "cell" th:text="${matchScore.player2.getName()}">
+                    Artem
                 </div>
-                <div class = "cell" th:text="${player2TieBreaks}">
+                <div class = "cell" th:text="${matchScore.player2.tieBreaksCounter}">
                     0
                 </div>
-                <div class = "cell" th:text="${player2Sets}">
+                <div class = "cell" th:text="${matchScore.player2.setCounter}">
                     0
                 </div>
-                <div class = "cell" th:text="${player2Games}">
+                <div class = "cell" th:text="${matchScore.player2.gameCounter}">
                     0
                 </div>
-                <div class = "cell" th:text="${player2Points}">
+                <div class = "cell" th:text="${matchScore.getFormattedPoints(matchScore.player2.pointCounter)}">
                     0
                 </div>
-                <div class = "advantage" th:class="'advantage '+${player2Advantage?'active':' '}">
+                <div class = "advantage" th:class="'advantage '+${matchScore.player2.isAdvantage()?'active':' '}">
                 </div>
 
             </div>
         </div>
 
-        <form method="post" name="win-buttons" th:action="${'/match-score?uuid='+uuid}">
-            <button type="submit" name="id" th:value="${player1Id}" th:text="${player1Name}">Artem</button>
-            <button type="submit" name="id" th:value="${player2Id}" th:text="${player2Name}">Vasya</button>
+        <form method="post" name="win-buttons" th:action="${'/match-score?uuid='+matchScore.uuid}">
+            <button type="submit" name="id" th:value="${matchScore.player1.id}" th:text="${matchScore.player1.name}">Artem</button>
+            <button type="submit" name="id" th:value="${matchScore.player2.id}" th:text="${matchScore.player2.name}">Vasya</button>
         </form>
     </div>
 </main>

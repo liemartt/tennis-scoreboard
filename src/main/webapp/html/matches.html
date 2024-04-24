@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tennis scoreboard</title>
+    <script src="https://kit.fontawesome.com/fd9c503804.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/matches.css">
+
+</head>
+<body>
+<header>
+    <h1><a href = "/">Home</a></h1>
+    <h1>All matches</h1>
+</header>
+<main>
+    <div class="bg-image"></div>
+    
+    <form th:action="${'/matches'}" method="post">
+        <input type="search" name = "playerName" placeholder="Player name" th:placeholder="${(playerName.isEmpty())?'Player name':playerName}">
+        <button type="submit" value=""><i class="fas fa-search"></i></button>
+        <button type="button"> <a th:href="${'/matches'}" th:method="${'get'}"><i class="fa-solid fa-xmark"></i></a> </button>
+    </form>
+
+
+    <table>
+        <tr>
+            <th>Match</th>
+            <th>Player 1</th>
+            <th>Player 2</th>
+        </tr>
+        <tr th:each="match : ${matches}">
+            <td th:text="${match.id}">1</td>
+            <td><i th:text="${match.player1.name}" th:class="${(match.player1.equals(match.winner))?'fa-solid fa-trophy':''}"></i></td>
+            <td><i th:text="${match.player2.name}" th:class="${(match.player2.equals(match.winner))?'fa-solid fa-trophy':''}"></i></td>
+        </tr>
+        <p th:text="${error}"></p>
+    </table>
+    <div class = "pages">
+    </div>
+
+</main>
+</body>
+</html>
