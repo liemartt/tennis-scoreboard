@@ -7,8 +7,6 @@ import com.liemartt.util.DBUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import java.util.List;
-
 public class FinishedMatchesPersistenceService {
     private final static SessionFactory sessionFactory = DBUtil.getSessionFactory();
     public static void saveMatch(Match match) {

@@ -2,13 +2,11 @@ package com.liemartt.servlet;
 
 import com.liemartt.dao.PlayerDAO;
 import com.liemartt.dao.PlayerDAOImpl;
-import com.liemartt.model.Match;
 import com.liemartt.model.MatchScore;
 import com.liemartt.model.Player;
 import com.liemartt.service.FinishedMatchesPersistenceService;
 import com.liemartt.service.MatchScoreCalculationService;
 import com.liemartt.service.OngoingMatchesService;
-import com.liemartt.util.MatchScoreRender;
 import com.liemartt.util.ThymeleafUtil;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -20,7 +18,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 import java.util.UUID;
 
 @WebServlet(urlPatterns = "/match-score")
@@ -32,7 +29,7 @@ public class MatchScoreServlet extends HttpServlet {
         WebContext context = ThymeleafUtil.getWebContext(req, resp, servletContext);
         UUID uuid = UUID.fromString(req.getParameter("uuid"));
         MatchScore matchScore = OngoingMatchesService.getMatch(uuid);
-        MatchScoreRender.render(context, matchScore, uuid);
+        context.setVariable("matchScore", matchScore);
         templateEngine.process("match-score", context, resp.getWriter());
     }
 
@@ -46,6 +43,7 @@ public class MatchScoreServlet extends HttpServlet {
         String id = req.getParameter("id");
         UUID uuid = UUID.fromString(req.getParameter("uuid"));
         MatchScore matchScore = OngoingMatchesService.getMatch(uuid);
+        //TODO check if match exists
         Player winner = (matchScore.getPlayer1().getId().toString().equals(id) ? matchScore.getPlayer1() : matchScore.getPlayer2()).getPlayer();
         MatchScoreCalculationService calculationService = new MatchScoreCalculationService(matchScore);
         //TODO singleton

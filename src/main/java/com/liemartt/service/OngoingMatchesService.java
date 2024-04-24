@@ -13,7 +13,7 @@ public class OngoingMatchesService {
 
     public static UUID addNewMatch(Match match) {
         MatchScore matchScore = new MatchScore(match);
-        UUID uuid = UUID.randomUUID();
+        UUID uuid = matchScore.getUuid();
         ongoingMatches.put(uuid, matchScore);
         return uuid;
     }
