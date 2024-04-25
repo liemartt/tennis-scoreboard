@@ -6,6 +6,7 @@ import com.liemartt.model.Player;
 import java.util.List;
 
 public interface MatchDAO {
-    List<Match> getAllMatches();
+    List<Match> getMatchesByPage(int page);
     List<Match> getMatchesByPlayer(Player player);
+    long getNumberOfMatches();
 }
