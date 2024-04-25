@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.liemartt.dao.MatchDAO;
 import com.liemartt.dao.MatchDAOImpl;
 import com.liemartt.dao.PlayerDAOImpl;
 import com.liemartt.model.Match;
@@ -24,13 +25,27 @@ public class MatchesServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        MatchDAO matchDAO = new MatchDAOImpl();
         ServletContext servletContext = getServletContext();
         TemplateEngine templateEngine = ThymeleafUtil.getTemplateEngine(servletContext);
         WebContext context = ThymeleafUtil.getWebContext(req, resp, servletContext);
-        List<Match> matchList = new MatchDAOImpl().getAllMatches();
+        String page = req.getParameter("page");
+        Long numberOfPages = Math.ceilDiv(matchDAO.getNumberOfMatches(), 5);
+        int numOfPage = 1;
+        if (page != null) {
+            try {
+                numOfPage = Integer.parseInt(page);
+                if (numOfPage < 1|| numOfPage > numberOfPages) {
+                    numOfPage = 1;
+                }
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        List<Match> matchList = matchDAO.getMatchesByPage(numOfPage);
         System.out.println(matchList);
         context.setVariable("matches", matchList);
         context.setVariable("playerName", "");
+        context.setVariable("numberOfPages", numberOfPages);
         templateEngine.process("matches.html", context, resp.getWriter());
     }
 
@@ -43,7 +58,7 @@ public class MatchesServlet extends HttpServlet {
         Optional<Player> player = new PlayerDAOImpl().getPlayerByName(playerName);
         List<Match> matchList = new ArrayList<>();
         if (player.isPresent()) {
-             matchList = new MatchDAOImpl().getMatchesByPlayer(player.get());
+            matchList = new MatchDAOImpl().getMatchesByPlayer(player.get());
         }
 
         //TODO page DTO
