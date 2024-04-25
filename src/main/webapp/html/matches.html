@@ -36,11 +36,12 @@
         <p th:text="${error}"></p>
 <!--        TODO: style error-->
     </table>
-    <div>
+    <div class = "pages">
         <ul>
             <li th:each="i : ${#numbers.sequence(1, numberOfPages)}">
-                <a th:href="@{/matches(page=${i})}" th:text="${i}">Page Link</a>
+                <a th:href="@{/matches(page=${i})}" th:text="${i}"></a>
             </li>
+
         </ul>
     </div>
 

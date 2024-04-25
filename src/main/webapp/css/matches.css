@@ -114,3 +114,26 @@ table {
         text-align: center;
     }
   }
+
+.pages{
+    display: flex;
+    position: absolute;
+    bottom: 5%;
+    width: 100%;
+    ul{
+        width: 100%;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+        align-items: center;
+        gap:3%;
+        list-style-type: none;
+        li{
+            font-size: 1.3rem;
+            a{
+                text-decoration: none;
+                color: black;
+            }
+        }
+    }
+}
