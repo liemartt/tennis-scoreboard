@@ -79,7 +79,7 @@
             </div>
         </div>
 
-        <form method="post" name="win-buttons" th:action="${'/match-score?uuid='+matchScore.uuid}">
+        <form method="post" name="win-buttons" th:action="@{/match-score(uuid=${matchScore.uuid})}">
             <button type="submit" name="id" th:value="${matchScore.player1.id}" th:text="${matchScore.player1.name}">Artem</button>
             <button type="submit" name="id" th:value="${matchScore.player2.id}" th:text="${matchScore.player2.name}">Vasya</button>
         </form>

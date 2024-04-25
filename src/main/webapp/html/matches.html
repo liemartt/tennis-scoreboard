@@ -34,8 +34,14 @@
             <td><i th:text="${match.player2.name}" th:class="${(match.player2.equals(match.winner))?'fa-solid fa-trophy':''}"></i></td>
         </tr>
         <p th:text="${error}"></p>
+<!--        TODO: style error-->
     </table>
-    <div class = "pages">
+    <div>
+        <ul>
+            <li th:each="i : ${#numbers.sequence(1, numberOfPages)}">
+                <a th:href="@{/matches(page=${i})}" th:text="${i}">Page Link</a>
+            </li>
+        </ul>
     </div>
 
 </main>
