@@ -41,7 +41,7 @@ public class NewMatchServlet extends HttpServlet {
         String firstPlayerName = req.getParameter("player1_name");
         String secondPlayerName = req.getParameter("player2_name");
 
-        if (Objects.equals(firstPlayerName, "") || Objects.equals(secondPlayerName, "")) {
+        if (Objects.equals(firstPlayerName, "") || Objects.equals(secondPlayerName, "") || Objects.equals(firstPlayerName, secondPlayerName)) {
             context.setVariable("error", "Invalid player name");
             templateEngine.process("new-match", context, resp.getWriter());
             return;
