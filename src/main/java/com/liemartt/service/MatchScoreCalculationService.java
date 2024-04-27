@@ -5,15 +5,12 @@ import com.liemartt.model.MatchScore;
 import com.liemartt.model.Player;
 
 public class MatchScoreCalculationService {
-    private final MatchScore matchScore;
-    private PLayerScore ally;
-    private PLayerScore enemy;
+    private static MatchScore matchScore;
+    private static PLayerScore ally;
+    private static PLayerScore enemy;
 
-    public MatchScoreCalculationService(MatchScore matchScore) {
-        this.matchScore = matchScore;
-    }
-
-    public void addPointToPlayer(Player player) {
+    public static void addPointToPlayer(MatchScore match, Player player) {
+        matchScore = match;
         if (player.equals(getPlayer1())) {
             ally = matchScore.getPlayer1();
             enemy = matchScore.getPlayer2();
@@ -38,7 +35,7 @@ public class MatchScoreCalculationService {
         }
     }
 
-    private void addGameToAlly() {
+    private static void addGameToAlly() {
         ally.addGame();
         ally.resetPointCounter();
         enemy.resetPointCounter();
@@ -50,7 +47,7 @@ public class MatchScoreCalculationService {
         }
     }
 
-    private void addTieBreakPoint() {
+    private static void addTieBreakPoint() {
         ally.addTieBreak();
         if (ally.getTieBreaksCounter() == 7) {
             matchScore.setTieBreak(false);
@@ -60,7 +57,7 @@ public class MatchScoreCalculationService {
         }
     }
 
-    private void addSetToAlly() {
+    private static void addSetToAlly() {
         ally.addSet();
         ally.resetGameCounter();
         enemy.resetGameCounter();
@@ -71,7 +68,7 @@ public class MatchScoreCalculationService {
         }
     }
 
-    private Player getPlayer1() {
+    private static Player getPlayer1() {
         return matchScore.getPlayer1().getPlayer();
     }
 

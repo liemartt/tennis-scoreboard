@@ -3,6 +3,7 @@ package com.liemartt.servlet;
 import com.liemartt.dao.MatchDAOImpl;
 import com.liemartt.dao.PlayerDAO;
 import com.liemartt.dao.PlayerDAOImpl;
+import com.liemartt.model.Match;
 import com.liemartt.model.MatchScore;
 import com.liemartt.model.Player;
 import com.liemartt.service.MatchScoreCalculationService;
@@ -29,13 +30,18 @@ public class MatchScoreServlet extends HttpServlet {
         WebContext context = ThymeleafUtil.getWebContext(req, resp, servletContext);
         UUID uuid = UUID.fromString(req.getParameter("uuid"));
         MatchScore matchScore = OngoingMatchesService.getMatch(uuid);
+        System.out.println(matchScore);
+        if (matchScore == null) {
+            context.setVariable("error", "No such match found");
+            templateEngine.process("new-match", context, resp.getWriter());
+            return;
+        }
         context.setVariable("matchScore", matchScore);
         templateEngine.process("match-score", context, resp.getWriter());
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PlayerDAO playerDAO = new PlayerDAOImpl();
         ServletContext servletContext = getServletContext();
         TemplateEngine templateEngine = ThymeleafUtil.getTemplateEngine(servletContext);
         WebContext context = ThymeleafUtil.getWebContext(req, resp, servletContext);
@@ -43,19 +49,30 @@ public class MatchScoreServlet extends HttpServlet {
         String id = req.getParameter("id");
         UUID uuid = UUID.fromString(req.getParameter("uuid"));
         MatchScore matchScore = OngoingMatchesService.getMatch(uuid);
-        //TODO check if match exists
-        Player winner = (matchScore.getPlayer1().getId().toString().equals(id) ? matchScore.getPlayer1() : matchScore.getPlayer2()).getPlayer();
-        MatchScoreCalculationService calculationService = new MatchScoreCalculationService(matchScore);
-        //TODO singleton
-        calculationService.addPointToPlayer(winner);
+
+        if (matchScore == null) {
+            context.setVariable("error", "No such match found");
+            templateEngine.process("new-match", context, resp.getWriter());
+            return;
+        }
+
+        Player winner = this.getWinner(id, matchScore);
+        MatchScoreCalculationService.addPointToPlayer(matchScore, winner);
+
         if (matchScore.isFinished()) {
             context.setVariable("winner", matchScore.getWinner().getName());
             context.setVariable("uuid", uuid);
             new MatchDAOImpl().saveMatch(matchScore.getMatch());
 
             templateEngine.process("finishedMatch", context, resp.getWriter());
-        }
-        else this.doGet(req, resp);
+        } else this.doGet(req, resp);
 
     }
+
+    private Player getWinner(String winnerId, MatchScore matchScore) {
+        if (matchScore.getPlayer1().getId().toString().equals(winnerId)) {
+            return matchScore.getPlayer1().getPlayer();
+        } else return matchScore.getPlayer2().getPlayer();
+    }
 }
+
