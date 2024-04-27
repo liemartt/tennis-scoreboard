@@ -47,4 +47,13 @@ public class MatchDAOImpl implements MatchDAO{
         session.getTransaction().commit();
         return numberOfMatches;
     }
+
+    @Override
+    public void saveMatch(Match match) {
+        SessionFactory sessionFactory = DBUtil.getSessionFactory();
+        Session session = sessionFactory.getCurrentSession();
+        session.beginTransaction();
+        session.persist(match);
+        session.getTransaction().commit();
+    }
 }

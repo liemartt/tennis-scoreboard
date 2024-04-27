@@ -9,4 +9,5 @@ public interface MatchDAO {
     List<Match> getMatchesByPage(int page);
     List<Match> getMatchesByPlayer(Player player);
     long getNumberOfMatches();
+    void saveMatch(Match match);
 }

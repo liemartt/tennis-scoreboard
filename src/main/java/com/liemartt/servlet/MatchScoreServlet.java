@@ -1,10 +1,10 @@
 package com.liemartt.servlet;
 
+import com.liemartt.dao.MatchDAOImpl;
 import com.liemartt.dao.PlayerDAO;
 import com.liemartt.dao.PlayerDAOImpl;
 import com.liemartt.model.MatchScore;
 import com.liemartt.model.Player;
-import com.liemartt.service.FinishedMatchesPersistenceService;
 import com.liemartt.service.MatchScoreCalculationService;
 import com.liemartt.service.OngoingMatchesService;
 import com.liemartt.util.ThymeleafUtil;
@@ -51,7 +51,7 @@ public class MatchScoreServlet extends HttpServlet {
         if (matchScore.isFinished()) {
             context.setVariable("winner", matchScore.getWinner().getName());
             context.setVariable("uuid", uuid);
-            FinishedMatchesPersistenceService.saveMatch(matchScore.getMatch());
+            new MatchDAOImpl().saveMatch(matchScore.getMatch());
 
             templateEngine.process("finishedMatch", context, resp.getWriter());
         }
