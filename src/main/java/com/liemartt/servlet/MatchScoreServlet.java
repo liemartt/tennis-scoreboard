@@ -1,9 +1,6 @@
 package com.liemartt.servlet;
 
 import com.liemartt.dao.MatchDAOImpl;
-import com.liemartt.dao.PlayerDAO;
-import com.liemartt.dao.PlayerDAOImpl;
-import com.liemartt.model.Match;
 import com.liemartt.model.MatchScore;
 import com.liemartt.model.Player;
 import com.liemartt.service.MatchScoreCalculationService;
@@ -63,16 +60,14 @@ public class MatchScoreServlet extends HttpServlet {
             context.setVariable("winner", matchScore.getWinner().getName());
             context.setVariable("uuid", uuid);
             new MatchDAOImpl().saveMatch(matchScore.getMatch());
-
             templateEngine.process("finishedMatch", context, resp.getWriter());
         } else this.doGet(req, resp);
-
     }
 
     private Player getWinner(String winnerId, MatchScore matchScore) {
-        if (matchScore.getPlayer1().getId().toString().equals(winnerId)) {
-            return matchScore.getPlayer1().getPlayer();
-        } else return matchScore.getPlayer2().getPlayer();
+        if (matchScore.getFirstPlayerScore().getId().toString().equals(winnerId)) {
+            return matchScore.getFirstPlayerScore().getPlayer();
+        } else return matchScore.getSecondPlayerScore().getPlayer();
     }
 }
 

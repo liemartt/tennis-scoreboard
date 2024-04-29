@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ import org.thymeleaf.context.WebContext;
 
 @WebServlet(urlPatterns = "/matches")
 public class MatchesServlet extends HttpServlet {
+    private static final int MATCHES_PER_PAGE = 5;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -29,42 +31,36 @@ public class MatchesServlet extends HttpServlet {
         ServletContext servletContext = getServletContext();
         TemplateEngine templateEngine = ThymeleafUtil.getTemplateEngine(servletContext);
         WebContext context = ThymeleafUtil.getWebContext(req, resp, servletContext);
+
         String page = req.getParameter("page");
-        Long numberOfPages = Math.ceilDiv(matchDAO.getNumberOfMatches(), 5);
+        String playerName = req.getParameter("filter_by_player_name");
+        long numberOfPages = 1L;
+        Optional<Player> player = Optional.empty();
+        if (playerName != null) {
+            player = new PlayerDAOImpl().getPlayerByName(playerName);
+        }
+        if (player.isPresent()) {
+            numberOfPages = Math.ceilDiv(matchDAO.getNumberOfMatches(player.get()), MATCHES_PER_PAGE);
+        } else numberOfPages = Math.ceilDiv(matchDAO.getNumberOfMatches(), MATCHES_PER_PAGE);
         int numOfPage = 1;
         if (page != null) {
             try {
                 numOfPage = Integer.parseInt(page);
-                if (numOfPage < 1|| numOfPage > numberOfPages) {
-                    numOfPage = 1;
-                }
             } catch (NumberFormatException ignored) {
             }
         }
-        List<Match> matchList = matchDAO.getMatchesByPage(numOfPage);
-        System.out.println(matchList);
+        if (numOfPage < 1 || numOfPage > numberOfPages) {
+            numOfPage = 1;
+        }
+        List<Match> matchList;
+        if (player.isPresent()) {
+            matchList = matchDAO.getMatchesByPageByPlayer(numOfPage, player.get());
+        } else matchList = matchDAO.getMatchesByPage(numOfPage);
+
         context.setVariable("matches", matchList);
-        context.setVariable("playerName", "");
+        context.setVariable("filter_by_player_name", player.isPresent() ? player.get().getName() : "");
         context.setVariable("numberOfPages", numberOfPages);
         templateEngine.process("matches.html", context, resp.getWriter());
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ServletContext servletContext = getServletContext();
-        TemplateEngine templateEngine = ThymeleafUtil.getTemplateEngine(servletContext);
-        WebContext context = ThymeleafUtil.getWebContext(req, resp, servletContext);
-        String playerName = req.getParameter("playerName");
-        Optional<Player> player = new PlayerDAOImpl().getPlayerByName(playerName);
-        List<Match> matchList = new ArrayList<>();
-        if (player.isPresent()) {
-            matchList = new MatchDAOImpl().getMatchesByPlayer(player.get());
-        }
-
-        //TODO page DTO
-        else context.setVariable("error", "Player not found!");
-        context.setVariable("matches", matchList);
-        context.setVariable("playerName", playerName);
-        templateEngine.process("matches.html", context, resp.getWriter());
-    }
 }
