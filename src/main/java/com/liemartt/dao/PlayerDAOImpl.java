@@ -34,12 +34,4 @@ public class PlayerDAOImpl implements PlayerDAO {
         return player;
     }
 
-    @Override
-    public List<Player> getAllPlayers() {
-        Session session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
-        List<Player> players = session.createQuery("FROM Player").getResultList();
-        session.getTransaction().commit();
-        return players;
-    }
 }
