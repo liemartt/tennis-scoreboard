@@ -110,7 +110,7 @@ input::placeholder{
 
 
 table {
-    width: 50%;
+    width: 80%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 3%;
@@ -132,6 +132,8 @@ table {
     position: absolute;
     bottom: 5%;
     width: 100%;
+    justify-content: center;
+    justify-items: center;
     ul{
         width: 100%;
         display: flex;
@@ -141,7 +143,7 @@ table {
         gap:3%;
         list-style-type: none;
         li{
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             a{
                 text-decoration: none;
                 color: black;
