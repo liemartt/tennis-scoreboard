@@ -12,11 +12,11 @@ public class MatchScoreCalculationService {
     public static void addPointToPlayer(MatchScore match, Player player) {
         matchScore = match;
         if (player.equals(getPlayer1())) {
-            ally = matchScore.getPlayer1();
-            enemy = matchScore.getPlayer2();
+            ally = matchScore.getFirstPlayerScore();
+            enemy = matchScore.getSecondPlayerScore();
         } else {
-            enemy = matchScore.getPlayer1();
-            ally = matchScore.getPlayer2();
+            enemy = matchScore.getFirstPlayerScore();
+            ally = matchScore.getSecondPlayerScore();
         }
         if (matchScore.isTieBreak()) {
             addTieBreakPoint();
@@ -42,7 +42,7 @@ public class MatchScoreCalculationService {
 
         if (ally.getGameCounter() == 6 && enemy.getGameCounter() == 6) {
             matchScore.setTieBreak(true);
-        } else if (ally.getGameCounter() == 7 && enemy.getGameCounter() <= 5) {
+        } else if ((ally.getGameCounter() == 6 && enemy.getGameCounter() <= 4) || (ally.getGameCounter() == 7 && enemy.getGameCounter() == 5)) {
             addSetToAlly();
         }
     }
@@ -69,7 +69,7 @@ public class MatchScoreCalculationService {
     }
 
     private static Player getPlayer1() {
-        return matchScore.getPlayer1().getPlayer();
+        return matchScore.getFirstPlayerScore().getPlayer();
     }
 
 }
