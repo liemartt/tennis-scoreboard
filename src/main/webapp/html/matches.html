@@ -21,7 +21,7 @@
         <button type="button"> <a th:href="@{'/matches'}" th:method="${'get'}"><i class="fa-solid fa-xmark"></i></a> </button>
     </form>
 
-
+    
     <table>
         <tr>
             <th>Match</th>
@@ -33,9 +33,9 @@
             <td><i th:text="${match.player1.name}" th:class="${(match.player1.equals(match.winner))?'fa-solid fa-trophy':''}"></i></td>
             <td><i th:text="${match.player2.name}" th:class="${(match.player2.equals(match.winner))?'fa-solid fa-trophy':''}"></i></td>
         </tr>
-        <p th:text="${error}"></p>
-<!--        TODO: style error-->
+        
     </table>
+    <p th:text="${error}">Invalid player name</p>
     <div class = "pages">
         <ul>
             <li th:each="i : ${#numbers.sequence(1, numberOfPages)}">

@@ -11,13 +11,13 @@
         <a href = "/">Home</a>
         <p>New match</p>
     </header>
-    <p th:text="${error}"></p>
     <main>
         <form method="post" name = "playerNames" action="/new-match">
             <input type="text" name="player1_name" placeholder="1 player">
             <input type="text" name = "player2_name" placeholder="2 player">
             <input type="submit" value="Start new match">
         </form>
+        <p th:text="${error}">Invalid player name</p>
     </main>
     <div class="bg-image"></div>
     <footer>

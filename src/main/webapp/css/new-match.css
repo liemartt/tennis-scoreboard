@@ -51,11 +51,15 @@ footer{
     background-size: cover;
 }
 main{
+    margin-top: 5%;
     height: 100%;
     width: 100%;
     display: flex;
+    flex-flow: column wrap;
     justify-content: center;
     align-items: center;
+    gap:20px;
+    
 }
 form{
     display: flex;
