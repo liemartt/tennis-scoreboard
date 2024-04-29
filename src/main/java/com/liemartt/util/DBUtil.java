@@ -18,7 +18,7 @@ public class DBUtil {
         return configuration.buildSessionFactory();
     }
 
-    static {
+    public static void initDb(){
         SessionFactory tempSessionFactory = getSessionFactory();
         Session session = tempSessionFactory.getCurrentSession();
         session.beginTransaction();
