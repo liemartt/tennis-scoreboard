@@ -15,10 +15,10 @@
 <main>
     <div class="bg-image"></div>
     
-    <form th:action="${'/matches'}" method="post">
-        <input type="search" name = "playerName" placeholder="Player name" th:placeholder="${(playerName.isEmpty())?'Player name':playerName}">
+    <form th:action="${'/matches'}" method="get">
+        <input type="search" name = "filter_by_player_name" placeholder="Player name" th:placeholder="${(filter_by_player_name.isEmpty())?'Player name':filter_by_player_name}">
         <button type="submit" value=""><i class="fas fa-search"></i></button>
-        <button type="button"> <a th:href="${'/matches'}" th:method="${'get'}"><i class="fa-solid fa-xmark"></i></a> </button>
+        <button type="button"> <a th:href="@{'/matches'}" th:method="${'get'}"><i class="fa-solid fa-xmark"></i></a> </button>
     </form>
 
 

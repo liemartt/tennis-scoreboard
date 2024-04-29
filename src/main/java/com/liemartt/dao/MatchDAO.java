@@ -7,7 +7,8 @@ import java.util.List;
 
 public interface MatchDAO {
     List<Match> getMatchesByPage(int page);
-    List<Match> getMatchesByPlayer(Player player);
+    List<Match> getMatchesByPageByPlayer(int page, Player player);
     long getNumberOfMatches();
+    long getNumberOfMatches(Player player);
     void saveMatch(Match match);
 }
