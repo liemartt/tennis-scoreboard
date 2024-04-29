@@ -7,13 +7,8 @@ A web application that implements a scoreboard for a tennis match.
 3. Front-end: JSP, HTML, CSS
 
 ### Deployment
-- Install H2 database
-- Install Tomcat 10
-- Configure hibernate.cfg.xml
-    - set url
-    - set username
-    - set password
-- Install .war artifact
+- docker build -t app .
+- docker run -p8080:8080 app
 
 ### Main page
 Links leading to the pages for the new match and the list of completed matches
