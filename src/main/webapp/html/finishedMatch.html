@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Tennis scoreboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <script src="https://kit.fontawesome.com/fd9c503804.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/css/match-score.css">
 
 </head>
 <body>
 <header>
-    <h1><a href = "/">Home</a></h1>
+    <h1><a href = "/"><i class="fa-solid fa-house"></i></a></h1>
     <h1 th:text = "${'Match '+uuid}">Match </h1>
 </header>
 <main>
     <div class="bg-image"></div>
     <div class = "scoreboard">
-        <h1 th:text = "${'Winner: '+winner}">Winner: Abobus</h1>
+        <h1 th:text = "${'Winner: '+winner}">Winner: </h1>
     </div>
 </main>
 </body>

@@ -55,6 +55,7 @@ form{
     /* gap:20px; */
 
     input[type="search"]{
+        display: flex;
         height: 50px;
         width: 50%;
         background: transparent;
@@ -80,6 +81,9 @@ form{
 
     }
     button{
+        display: flex;
+        justify-items: center;
+        align-items: center;
         height: 50px;
         width: fit-content;
         background: transparent;
@@ -90,6 +94,9 @@ form{
         border-color: black;
         font-size: 2rem;
         color: black;
+        a{
+            display: flex;
+        }
     }
 }
 
@@ -140,5 +147,22 @@ table {
                 color: black;
             }
         }
+    }
+}
+@media (max-width:580px){
+    form{
+        height: 60px;
+    }
+    input::placeholder, header{
+        font-size: 0.5rem;
+    }
+    form input[type="search"], form button{
+        height: 20px;
+    }
+    button i{
+        font-size: 10px;
+    }
+    table, .error{
+        font-size: 0.7rem;
     }
 }

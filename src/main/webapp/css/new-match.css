@@ -15,10 +15,7 @@ header{
     height: 15%;
     justify-content: center;
     align-items: center;
-    
-    p{
-        font-size: 2rem;
-    }
+    font-size: 2rem;
     a{
         display: block;
         position: absolute;
@@ -26,6 +23,7 @@ header{
         top:10px;
         text-decoration: none;
         color: rgb(33, 102, 143);
+
     }
 }
 

@@ -72,6 +72,9 @@ main{
     height: 10vh;
     justify-content: center;
     align-items: center;
+    font-size: 0.7rem;
+    overflow-wrap:break-word;
+    overflow: hidden;
 }
 form{
     display: flex;
@@ -110,4 +113,9 @@ button{
     justify-content: center;
     align-items: center;
     justify-self: end;
+}
+@media (max-width:580px){
+    .cell, .title, button, header{
+        font-size: 0.5rem;
+    }
 }
