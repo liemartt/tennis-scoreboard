@@ -1,13 +1,13 @@
 package com.liemartt.service;
 
-import com.liemartt.model.PLayerScore;
+import com.liemartt.model.PlayerScore;
 import com.liemartt.model.MatchScore;
 import com.liemartt.model.Player;
 
 public class MatchScoreCalculationService {
     private static MatchScore matchScore;
-    private static PLayerScore ally;
-    private static PLayerScore enemy;
+    private static PlayerScore ally;
+    private static PlayerScore enemy;
 
     public static void addPointToPlayer(MatchScore match, Player player) {
         matchScore = match;

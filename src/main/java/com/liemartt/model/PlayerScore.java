@@ -5,11 +5,10 @@ import lombok.*;
 @Getter
 @Setter
 @RequiredArgsConstructor
-@NoArgsConstructor
-public class PLayerScore {
+public class PlayerScore {
     private Player player;
 
-    public PLayerScore(Player player) {
+    public PlayerScore(Player player) {
         this.player = player;
     }
 

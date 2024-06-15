@@ -1,6 +1,5 @@
 package com.liemartt.model;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -12,17 +11,17 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MatchScore {
     private final Match match;
-    private final PLayerScore firstPlayerScore;
-    private final PLayerScore secondPlayerScore;
-    private PLayerScore winner;
+    private final PlayerScore firstPlayerScore;
+    private final PlayerScore secondPlayerScore;
+    private PlayerScore winner;
     private boolean isFinished;
     private boolean tieBreak;
     private UUID uuid;
 
     public MatchScore(Match match) {
         this.match = match;
-        this.firstPlayerScore = new PLayerScore(match.getPlayer1());
-        this.secondPlayerScore = new PLayerScore(match.getPlayer2());
+        this.firstPlayerScore = new PlayerScore(match.getPlayer1());
+        this.secondPlayerScore = new PlayerScore(match.getPlayer2());
         this.uuid = UUID.randomUUID();
     }
     public String getFormattedPoints(int score) {
