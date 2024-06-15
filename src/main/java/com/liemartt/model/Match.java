@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "matches")
+@Table(name = "matches", uniqueConstraints = {@UniqueConstraint(columnNames = {"player1", "player2"})})
 @Getter
 @Setter
 @RequiredArgsConstructor
