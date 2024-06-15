@@ -1,10 +1,15 @@
 package com.liemartt.model;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class MatchScore {
     private final Match match;
     private final PLayerScore firstPlayerScore;

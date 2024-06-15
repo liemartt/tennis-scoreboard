@@ -1,9 +1,10 @@
 package com.liemartt.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
 @NoArgsConstructor
 public class PLayerScore {
     private Player player;
