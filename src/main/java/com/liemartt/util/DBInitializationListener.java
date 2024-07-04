@@ -10,7 +10,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 @WebListener
-public class DBPopulatingListener implements ServletContextListener {
+public class DBInitializationListener implements ServletContextListener {
     public static void initDb() {
         SessionFactory tempSessionFactory = DBUtil.getSessionFactory();
         Session session = tempSessionFactory.getCurrentSession();
