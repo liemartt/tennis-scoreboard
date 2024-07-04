@@ -1,26 +1,34 @@
 package com.liemartt.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
 @RequiredArgsConstructor
 public class PlayerScore {
     private Player player;
-
-    public PlayerScore(Player player) {
-        this.player = player;
-    }
-
     private int setCounter;
     private int gameCounter;
     private int pointCounter;
     private int tieBreaksCounter;
     private boolean advantage;
 
-    public void addPoint() {
-        pointCounter++;
+    public PlayerScore(Player player) {
+        this.player = player;
     }
+
+    public void addPoint() {
+        int currentPoints = this.pointCounter;
+        this.pointCounter = switch (currentPoints) {
+            case 0 -> 15;
+            case 15 -> 30;
+            case 30 -> 40;
+            default -> throw new IllegalStateException("Unexpected value: " + currentPoints);
+        };
+    }
+    
 
     public void addGame() {
         gameCounter++;
@@ -37,6 +45,7 @@ public class PlayerScore {
     public void resetPointCounter() {
         pointCounter = 0;
     }
+
     public void resetGameCounter() {
         gameCounter = 0;
     }
@@ -44,7 +53,8 @@ public class PlayerScore {
     public String getName() {
         return player.getName();
     }
-    public Long getId(){
+
+    public Long getId() {
         return player.getId();
     }
 

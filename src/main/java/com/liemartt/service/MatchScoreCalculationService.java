@@ -1,8 +1,8 @@
 package com.liemartt.service;
 
-import com.liemartt.model.PlayerScore;
 import com.liemartt.model.MatchScore;
 import com.liemartt.model.Player;
+import com.liemartt.model.PlayerScore;
 
 public class MatchScoreCalculationService {
     private static MatchScore matchScore;
@@ -23,10 +23,10 @@ public class MatchScoreCalculationService {
             return;
         }
 
-        if (ally.getPointCounter() <= 2) ally.addPoint();
-        else if (ally.getPointCounter() == 3 && enemy.getPointCounter() <= 2) {
+        if (ally.getPointCounter() <= 30) ally.addPoint();
+        else if (ally.getPointCounter() == 40 && enemy.getPointCounter() <= 30) {
             addGameToAlly();
-        } else if (ally.getPointCounter() == 3 && ally.isAdvantage()) {
+        } else if (ally.getPointCounter() == 40 && ally.isAdvantage()) {
             ally.setAdvantage(false);
             addGameToAlly();
         } else {
