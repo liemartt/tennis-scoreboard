@@ -22,9 +22,8 @@ public class PlayerDAOImpl implements PlayerDAO {
     }
 
     @Override
-    public Player addNewPlayer(String name) {
+    public Player savePlayer(Player player) {
         Session session = DBUtil.getSession();
-        Player player = new Player(name);
         session.beginTransaction();
         session.persist(player);
         session.getTransaction().commit();

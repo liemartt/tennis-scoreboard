@@ -36,8 +36,14 @@ public class NewMatchServlet extends AbstractServlet {
             return;
         }
 
-        Player firstPlayer = playerDAO.getPlayerByName(firstPlayerName).orElseGet(() -> playerDAO.addNewPlayer(firstPlayerName));
-        Player secondPlayer = playerDAO.getPlayerByName(secondPlayerName).orElseGet(() -> playerDAO.addNewPlayer(secondPlayerName));
+        Player firstPlayer =
+                playerDAO
+                        .getPlayerByName(firstPlayerName)
+                        .orElseGet(() -> playerDAO.savePlayer(new Player(firstPlayerName)));
+        Player secondPlayer =
+                playerDAO
+                        .getPlayerByName(secondPlayerName)
+                        .orElseGet(() -> playerDAO.savePlayer(new Player(secondPlayerName)));
 
         UUID uuid = OngoingMatchesService.addNewMatch(new Match(firstPlayer, secondPlayer));
         resp.sendRedirect("/match-score?uuid=" + uuid.toString());
