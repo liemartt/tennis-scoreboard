@@ -1,61 +1,60 @@
 package com.liemartt.dao;
 
+import com.liemartt.dto.MatchesRequestDTO;
+import com.liemartt.dto.MatchesResponseDTO;
 import com.liemartt.model.Match;
 import com.liemartt.model.Player;
 import com.liemartt.util.DBUtil;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
+import org.hibernate.query.Page;
 
 import java.util.List;
 
 public class MatchDAOImpl implements MatchDAO {
+
+
     @Override
-    public List<Match> getMatchesByPage(int page) {
+    public MatchesResponseDTO getFilteredMatches(MatchesRequestDTO dto) {
         Session session = DBUtil.getSession();
-        session.beginTransaction();
-        Query query = session.createQuery("from Match");
-        query.setMaxResults(page * 5);
-        List<Match> matches = query.getResultList();
-        matches = matches.subList((page - 1) * 5, Math.min(matches.size(), page * 5));
-        session.getTransaction().commit();
-        return matches;
+        MatchesResponseDTO responseDTO = new MatchesResponseDTO();
+        List<Match> matches;
+        Player player = dto.getPlayer();
+        long totalMatches = dto.getTotalMatches();
+        long page = dto.getPage();
+        long matchesPerPage = dto.getMatchesPerPage();
+        if ((page - 1) * matchesPerPage >= totalMatches) page = 1;
+        if (player != null) {
+            session.beginTransaction();
+            matches =
+                    session
+                            .createSelectionQuery("FROM Match where player1=:player or player2=:player", Match.class)
+                            .setParameter("player", player)
+                            .setPage(Page.page((int) matchesPerPage, (int) page - 1))
+                            .getResultList();
+            session.getTransaction().commit();
+            totalMatches = matches.size();
+        } else {
+            session.beginTransaction();
+            matches =
+                    session
+                            .createSelectionQuery("FROM Match", Match.class)
+                            .setPage(Page.page((int) matchesPerPage, (int) page - 1))
+                            .getResultList();
+            session.getTransaction().commit();
+        }
+        responseDTO.setMatches(matches);
+        responseDTO.setPage(page);
+        responseDTO.setTotalPages(Math.ceilDiv(totalMatches, matchesPerPage));
+        return responseDTO;
     }
 
     @Override
-    public List<Match> getMatchesByPageByPlayer(int page, Player player) {
+    public long getMatchesCount() {
         Session session = DBUtil.getSession();
         session.beginTransaction();
-        Query query = session.createQuery("from Match m where m.player1 = :player or m.player2 = :player");
-        query.setParameter("player", player);
-        query.setMaxResults(page * 5);
-        List<Match> matches = query.getResultList();
-        matches = matches.subList((page - 1) * 5, Math.min(matches.size(), page * 5));
+        long total = session.createSelectionQuery("FROM Match", Match.class).stream().count();
         session.getTransaction().commit();
-        return matches;
-    }
-
-
-    @Override
-    public long getNumberOfMatches() {
-        Session session = DBUtil.getSession();
-        session.beginTransaction();
-        String hql = "select count(*) from Match";
-        Query query = session.createQuery(hql);
-        long numberOfMatches = (Long) query.uniqueResult();
-        session.getTransaction().commit();
-        return numberOfMatches;
-    }
-
-    @Override
-    public long getNumberOfMatches(Player player) {
-        Session session = DBUtil.getSession();
-        session.beginTransaction();
-        String hql = "select count(*) from Match m where m.player1 = :player or m.player2 = :player";
-        Query query = session.createQuery(hql);
-        query.setParameter("player", player);
-        long numberOfMatches = (Long) query.uniqueResult();
-        session.getTransaction().commit();
-        return numberOfMatches;
+        return total;
     }
 
     @Override

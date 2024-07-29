@@ -3,6 +3,8 @@ package com.liemartt.servlet;
 import com.liemartt.dao.MatchDAO;
 import com.liemartt.dao.MatchDAOImpl;
 import com.liemartt.dao.PlayerDAOImpl;
+import com.liemartt.dto.MatchesRequestDTO;
+import com.liemartt.dto.MatchesResponseDTO;
 import com.liemartt.model.Match;
 import com.liemartt.model.Player;
 
@@ -17,39 +19,32 @@ import java.util.Optional;
 @WebServlet(urlPatterns = "/matches")
 public class MatchesServlet extends AbstractServlet {
     private static final int MATCHES_PER_PAGE = 5;
+    private final MatchDAO matchDAO = new MatchDAOImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        MatchDAO matchDAO = new MatchDAOImpl();
         initializeServlet(req, resp);
+
         String page = req.getParameter("page");
         String playerName = req.getParameter("filter_by_player_name");
-        long numberOfPages = 1L;
-        Optional<Player> player = Optional.empty();
-        if (playerName != null) {
-            player = new PlayerDAOImpl().getPlayerByName(playerName);
-        }
-        if (player.isPresent()) {
-            numberOfPages = Math.ceilDiv(matchDAO.getNumberOfMatches(player.get()), MATCHES_PER_PAGE);
-        } else numberOfPages = Math.ceilDiv(matchDAO.getNumberOfMatches(), MATCHES_PER_PAGE);
-        int numOfPage = 1;
-        if (page != null) {
-            try {
-                numOfPage = Integer.parseInt(page);
-            } catch (NumberFormatException ignored) {
-            }
-        }
-        if (numOfPage < 1 || numOfPage > numberOfPages) {
-            numOfPage = 1;
-        }
-        List<Match> matchList;
-        if (player.isPresent()) {
-            matchList = matchDAO.getMatchesByPageByPlayer(numOfPage, player.get());
-        } else matchList = matchDAO.getMatchesByPage(numOfPage);
 
+        MatchesRequestDTO requestDTO = new MatchesRequestDTO();
+
+        Optional<Player> player = new PlayerDAOImpl().getPlayerByName(playerName);
+        player.ifPresent(requestDTO::setPlayer);
+        try {
+            long numOfPage = Integer.parseInt(page);
+            requestDTO.setPage(numOfPage);
+        } catch (Exception e) {
+            requestDTO.setPage(1);
+        }
+        requestDTO.setTotalMatches(matchDAO.getMatchesCount());
+        requestDTO.setMatchesPerPage(MATCHES_PER_PAGE);
+        MatchesResponseDTO responseDTO = matchDAO.getFilteredMatches(requestDTO);
+        List<Match> matchList = responseDTO.getMatches();
         context.setVariable("matches", matchList);
         context.setVariable("filter_by_player_name", player.isPresent() ? player.get().getName() : "");
-        context.setVariable("numberOfPages", numberOfPages);
+        context.setVariable("numberOfPages", responseDTO.getTotalPages());
         templateEngine.process("matches.html", context, resp.getWriter());
     }
 

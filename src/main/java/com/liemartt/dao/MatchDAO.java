@@ -1,18 +1,13 @@
 package com.liemartt.dao;
 
+import com.liemartt.dto.MatchesRequestDTO;
+import com.liemartt.dto.MatchesResponseDTO;
 import com.liemartt.model.Match;
-import com.liemartt.model.Player;
-
-import java.util.List;
 
 public interface MatchDAO {
-    List<Match> getMatchesByPage(int page);
+    MatchesResponseDTO getFilteredMatches(MatchesRequestDTO dto);
 
-    List<Match> getMatchesByPageByPlayer(int page, Player player);
-
-    long getNumberOfMatches();
-
-    long getNumberOfMatches(Player player);
+    long getMatchesCount();
 
     Match saveMatch(Match match);
 }
