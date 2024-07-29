@@ -59,10 +59,11 @@ public class MatchDAOImpl implements MatchDAO {
     }
 
     @Override
-    public void saveMatch(Match match) {
+    public Match saveMatch(Match match) {
         Session session = DBUtil.getSession();
         session.beginTransaction();
         session.persist(match);
         session.getTransaction().commit();
+        return match;
     }
 }
