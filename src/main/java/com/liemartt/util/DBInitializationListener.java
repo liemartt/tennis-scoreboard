@@ -59,12 +59,13 @@ public class DBInitializationListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-
+        initDb();
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
 
     }
+
 
 }
