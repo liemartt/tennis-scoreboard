@@ -3,7 +3,6 @@ package com.liemartt.util;
 import com.liemartt.model.Match;
 import com.liemartt.model.Player;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -12,8 +11,7 @@ import javax.servlet.annotation.WebListener;
 @WebListener
 public class DBInitializationListener implements ServletContextListener {
     public static void initDb() {
-        SessionFactory tempSessionFactory = DBUtil.getSessionFactory();
-        Session session = tempSessionFactory.getCurrentSession();
+        Session session = DBUtil.getSession();
         session.beginTransaction();
         Player pl1;
         Player pl2;

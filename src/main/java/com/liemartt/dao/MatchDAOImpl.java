@@ -4,7 +4,6 @@ import com.liemartt.model.Match;
 import com.liemartt.model.Player;
 import com.liemartt.util.DBUtil;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
 import java.util.List;
@@ -12,8 +11,7 @@ import java.util.List;
 public class MatchDAOImpl implements MatchDAO {
     @Override
     public List<Match> getMatchesByPage(int page) {
-        SessionFactory sessionFactory = DBUtil.getSessionFactory();
-        Session session = sessionFactory.getCurrentSession();
+        Session session = DBUtil.getSession();
         session.beginTransaction();
         Query query = session.createQuery("from Match");
         query.setMaxResults(page * 5);
@@ -25,8 +23,7 @@ public class MatchDAOImpl implements MatchDAO {
 
     @Override
     public List<Match> getMatchesByPageByPlayer(int page, Player player) {
-        SessionFactory sessionFactory = DBUtil.getSessionFactory();
-        Session session = sessionFactory.getCurrentSession();
+        Session session = DBUtil.getSession();
         session.beginTransaction();
         Query query = session.createQuery("from Match m where m.player1 = :player or m.player2 = :player");
         query.setParameter("player", player);
@@ -40,8 +37,7 @@ public class MatchDAOImpl implements MatchDAO {
 
     @Override
     public long getNumberOfMatches() {
-        SessionFactory sessionFactory = DBUtil.getSessionFactory();
-        Session session = sessionFactory.getCurrentSession();
+        Session session = DBUtil.getSession();
         session.beginTransaction();
         String hql = "select count(*) from Match";
         Query query = session.createQuery(hql);
@@ -52,8 +48,7 @@ public class MatchDAOImpl implements MatchDAO {
 
     @Override
     public long getNumberOfMatches(Player player) {
-        SessionFactory sessionFactory = DBUtil.getSessionFactory();
-        Session session = sessionFactory.getCurrentSession();
+        Session session = DBUtil.getSession();
         session.beginTransaction();
         String hql = "select count(*) from Match m where m.player1 = :player or m.player2 = :player";
         Query query = session.createQuery(hql);
@@ -65,8 +60,7 @@ public class MatchDAOImpl implements MatchDAO {
 
     @Override
     public void saveMatch(Match match) {
-        SessionFactory sessionFactory = DBUtil.getSessionFactory();
-        Session session = sessionFactory.getCurrentSession();
+        Session session = DBUtil.getSession();
         session.beginTransaction();
         session.persist(match);
         session.getTransaction().commit();
