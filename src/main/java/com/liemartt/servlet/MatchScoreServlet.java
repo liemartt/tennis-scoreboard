@@ -5,26 +5,19 @@ import com.liemartt.model.MatchScore;
 import com.liemartt.model.Player;
 import com.liemartt.service.MatchScoreCalculationService;
 import com.liemartt.service.OngoingMatchesService;
-import com.liemartt.util.ThymeleafUtil;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.UUID;
 
 @WebServlet(urlPatterns = "/match-score")
-public class MatchScoreServlet extends HttpServlet {
+public class MatchScoreServlet extends AbstractServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ServletContext servletContext = getServletContext();
-        TemplateEngine templateEngine = ThymeleafUtil.getTemplateEngine(servletContext);
-        WebContext context = ThymeleafUtil.getWebContext(req, resp, servletContext);
+        initializeServlet(req, resp);
         UUID uuid = UUID.fromString(req.getParameter("uuid"));
         MatchScore matchScore = OngoingMatchesService.getMatch(uuid);
         System.out.println(matchScore);
@@ -39,10 +32,7 @@ public class MatchScoreServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ServletContext servletContext = getServletContext();
-        TemplateEngine templateEngine = ThymeleafUtil.getTemplateEngine(servletContext);
-        WebContext context = ThymeleafUtil.getWebContext(req, resp, servletContext);
-
+        initializeServlet(req, resp);
         String id = req.getParameter("id");
         UUID uuid = UUID.fromString(req.getParameter("uuid"));
         MatchScore matchScore = OngoingMatchesService.getMatch(uuid);

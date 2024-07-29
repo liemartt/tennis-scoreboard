@@ -1,37 +1,27 @@
 package com.liemartt.servlet;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.swing.*;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import com.liemartt.dao.MatchDAO;
 import com.liemartt.dao.MatchDAOImpl;
 import com.liemartt.dao.PlayerDAOImpl;
 import com.liemartt.model.Match;
 import com.liemartt.model.Player;
-import com.liemartt.util.ThymeleafUtil;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 @WebServlet(urlPatterns = "/matches")
-public class MatchesServlet extends HttpServlet {
+public class MatchesServlet extends AbstractServlet {
     private static final int MATCHES_PER_PAGE = 5;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         MatchDAO matchDAO = new MatchDAOImpl();
-        ServletContext servletContext = getServletContext();
-        TemplateEngine templateEngine = ThymeleafUtil.getTemplateEngine(servletContext);
-        WebContext context = ThymeleafUtil.getWebContext(req, resp, servletContext);
-
+        initializeServlet(req, resp);
         String page = req.getParameter("page");
         String playerName = req.getParameter("filter_by_player_name");
         long numberOfPages = 1L;
