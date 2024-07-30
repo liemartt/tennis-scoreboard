@@ -24,5 +24,25 @@ public class MatchScore {
         this.secondPlayerScore = new PlayerScore(match.getPlayer2());
         this.uuid = UUID.randomUUID();
     }
-    
+
+    public Long getPlayer1Id() {
+        return firstPlayerScore.getId();
+    }
+
+    public Long getPlayer2Id() {
+        return secondPlayerScore.getId();
+    }
+
+    public PlayerScore getPointWinner(Long winnerId) {
+        if (firstPlayerScore.getPlayer().getId().equals(winnerId)) {
+            return firstPlayerScore;
+        } else return secondPlayerScore;
+    }
+
+    public PlayerScore getOpponent(Long winnerId) {
+        if (!firstPlayerScore.getPlayer().getId().equals(winnerId)) {
+            return firstPlayerScore;
+        } else return secondPlayerScore;
+    }
+
 }

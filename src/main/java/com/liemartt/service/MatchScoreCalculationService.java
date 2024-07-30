@@ -1,75 +1,62 @@
 package com.liemartt.service;
 
 import com.liemartt.model.MatchScore;
-import com.liemartt.model.Player;
 import com.liemartt.model.PlayerScore;
 
 public class MatchScoreCalculationService {
-    private static MatchScore matchScore;
-    private static PlayerScore ally;
-    private static PlayerScore enemy;
 
-    public static void addPointToPlayer(MatchScore match, Player player) {
-        matchScore = match;
-        if (player.equals(getPlayer1())) {
-            ally = matchScore.getFirstPlayerScore();
-            enemy = matchScore.getSecondPlayerScore();
-        } else {
-            enemy = matchScore.getFirstPlayerScore();
-            ally = matchScore.getSecondPlayerScore();
-        }
-        if (matchScore.isTieBreak()) {
-            addTieBreakPoint();
+    public void addPointToPlayer(MatchScore match, long winnerId) {
+        PlayerScore pointWinner = match.getPointWinner(winnerId);
+        PlayerScore opponent = match.getOpponent(winnerId);
+
+        if (match.isTieBreak()) {
+            addTieBreakPoint(match, pointWinner, opponent);
             return;
         }
 
-        if (ally.getPointCounter() <= 30) ally.addPoint();
-        else if (ally.getPointCounter() == 40 && enemy.getPointCounter() <= 30) {
-            addGameToAlly();
-        } else if (ally.getPointCounter() == 40 && ally.isAdvantage()) {
-            ally.setAdvantage(false);
-            addGameToAlly();
+        if (pointWinner.getPointCounter() <= 30) pointWinner.addPoint();
+        else if (pointWinner.getPointCounter() == 40 && opponent.getPointCounter() <= 30) {
+            addGameToPlayer(match, pointWinner, opponent);
+        } else if (pointWinner.getPointCounter() == 40 && pointWinner.isAdvantage()) {
+            pointWinner.setAdvantage(false);
+            addGameToPlayer(match, pointWinner, opponent);
         } else {
-            if (enemy.isAdvantage()) enemy.setAdvantage(false);
-            else ally.setAdvantage(true);
+            if (opponent.isAdvantage()) opponent.setAdvantage(false);
+            else pointWinner.setAdvantage(true);
         }
     }
 
-    private static void addGameToAlly() {
-        ally.addGame();
-        ally.resetPointCounter();
-        enemy.resetPointCounter();
+    private void addGameToPlayer(MatchScore match, PlayerScore pointWinner, PlayerScore opponent) {
+        pointWinner.addGame();
+        pointWinner.resetPointCounter();
+        opponent.resetPointCounter();
 
-        if (ally.getGameCounter() == 6 && enemy.getGameCounter() == 6) {
-            matchScore.setTieBreak(true);
-        } else if ((ally.getGameCounter() == 6 && enemy.getGameCounter() <= 4) || (ally.getGameCounter() == 7 && enemy.getGameCounter() == 5)) {
-            addSetToAlly();
+        if (pointWinner.getGameCounter() == 6 && opponent.getGameCounter() == 6) {
+            match.setTieBreak(true);
+        } else if ((pointWinner.getGameCounter() == 6 && opponent.getGameCounter() <= 4) || (pointWinner.getGameCounter() == 7 && opponent.getGameCounter() == 5)) {
+            addSetToPlayer(match, pointWinner, opponent);
         }
     }
 
-    private static void addTieBreakPoint() {
-        ally.addTieBreak();
-        if (ally.getTieBreaksCounter() == 7) {
-            matchScore.setTieBreak(false);
-            ally.resetTieBreaksCounter();
-            enemy.resetTieBreaksCounter();
-            addSetToAlly();
+    private void addTieBreakPoint(MatchScore match, PlayerScore pointWinner, PlayerScore opponent) {
+        pointWinner.addTieBreak();
+        if (pointWinner.getTieBreaksCounter() == 7) {
+            match.setTieBreak(false);
+            pointWinner.resetTieBreaksCounter();
+            opponent.resetTieBreaksCounter();
+            addSetToPlayer(match, pointWinner, opponent);
         }
     }
 
-    private static void addSetToAlly() {
-        ally.addSet();
-        ally.resetGameCounter();
-        enemy.resetGameCounter();
-        if (ally.getSetCounter() == 2) {
+    private void addSetToPlayer(MatchScore matchScore, PlayerScore pointWinner, PlayerScore opponent) {
+        pointWinner.addSet();
+        pointWinner.resetGameCounter();
+        opponent.resetGameCounter();
+        if (pointWinner.getSetCounter() == 2) {
             matchScore.setFinished(true);
-            matchScore.setWinner(ally);
-            matchScore.getMatch().setWinner(ally.getPlayer());
+            matchScore.setWinner(pointWinner);
+            matchScore.getMatch().setWinner(pointWinner.getPlayer());
         }
-    }
-
-    private static Player getPlayer1() {
-        return matchScore.getFirstPlayerScore().getPlayer();
     }
 
 }

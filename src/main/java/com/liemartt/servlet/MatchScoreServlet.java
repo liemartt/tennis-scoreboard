@@ -2,9 +2,6 @@ package com.liemartt.servlet;
 
 import com.liemartt.dao.MatchDAOImpl;
 import com.liemartt.model.MatchScore;
-import com.liemartt.model.Player;
-import com.liemartt.service.MatchScoreCalculationService;
-import com.liemartt.service.OngoingMatchesService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,11 +12,12 @@ import java.util.UUID;
 
 @WebServlet(urlPatterns = "/match-score")
 public class MatchScoreServlet extends AbstractServlet {
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         initializeServlet(req, resp);
         UUID uuid = UUID.fromString(req.getParameter("uuid"));
-        MatchScore matchScore = OngoingMatchesService.getMatch(uuid);
+        MatchScore matchScore = ongoingMatchesService.getMatch(uuid);
         if (matchScore == null) {
             context.setVariable("error", "No such match found");
             templateEngine.process("new-match", context, resp.getWriter());
@@ -32,9 +30,9 @@ public class MatchScoreServlet extends AbstractServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         initializeServlet(req, resp);
-        String id = req.getParameter("id");
+        String winnerId = req.getParameter("id");
         UUID uuid = UUID.fromString(req.getParameter("uuid"));
-        MatchScore matchScore = OngoingMatchesService.getMatch(uuid);
+        MatchScore matchScore = ongoingMatchesService.getMatch(uuid);
 
         if (matchScore == null) {
             context.setVariable("error", "No such match found");
@@ -42,8 +40,7 @@ public class MatchScoreServlet extends AbstractServlet {
             return;
         }
 
-        Player winner = this.getWinner(id, matchScore);
-        MatchScoreCalculationService.addPointToPlayer(matchScore, winner);
+        matchScoreCalculationService.addPointToPlayer(matchScore, Long.parseLong(winnerId));
 
         if (matchScore.isFinished()) {
             context.setVariable("winner", matchScore.getWinner().getName());
@@ -53,10 +50,5 @@ public class MatchScoreServlet extends AbstractServlet {
         } else this.doGet(req, resp);
     }
 
-    private Player getWinner(String winnerId, MatchScore matchScore) {
-        if (matchScore.getFirstPlayerScore().getId().toString().equals(winnerId)) {
-            return matchScore.getFirstPlayerScore().getPlayer();
-        } else return matchScore.getSecondPlayerScore().getPlayer();
-    }
 }
 
