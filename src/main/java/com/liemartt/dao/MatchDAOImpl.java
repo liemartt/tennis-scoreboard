@@ -19,7 +19,7 @@ public class MatchDAOImpl implements MatchDAO {
         MatchesResponseDTO responseDTO = new MatchesResponseDTO();
         List<Match> matches;
         Player player = dto.getPlayer();
-        long totalMatches = dto.getTotalMatches();
+        long totalMatches = getMatchesCount();
         long page = dto.getPage();
         long matchesPerPage = dto.getMatchesPerPage();
         if ((page - 1) * matchesPerPage >= totalMatches) page = 1;
