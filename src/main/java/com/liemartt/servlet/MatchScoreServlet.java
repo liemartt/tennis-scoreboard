@@ -20,7 +20,6 @@ public class MatchScoreServlet extends AbstractServlet {
         initializeServlet(req, resp);
         UUID uuid = UUID.fromString(req.getParameter("uuid"));
         MatchScore matchScore = OngoingMatchesService.getMatch(uuid);
-        System.out.println(matchScore);
         if (matchScore == null) {
             context.setVariable("error", "No such match found");
             templateEngine.process("new-match", context, resp.getWriter());

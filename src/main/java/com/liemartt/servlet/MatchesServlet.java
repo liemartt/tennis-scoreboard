@@ -24,12 +24,10 @@ public class MatchesServlet extends AbstractServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         initializeServlet(req, resp);
-
         String page = req.getParameter("page");
         String playerName = req.getParameter("filter_by_player_name");
 
         MatchesRequestDTO requestDTO = new MatchesRequestDTO();
-
         Optional<Player> player = new PlayerDAOImpl().getPlayerByName(playerName);
         player.ifPresent(requestDTO::setPlayer);
         try {
@@ -38,8 +36,8 @@ public class MatchesServlet extends AbstractServlet {
         } catch (Exception e) {
             requestDTO.setPage(1);
         }
-        requestDTO.setTotalMatches(matchDAO.getMatchesCount());
         requestDTO.setMatchesPerPage(MATCHES_PER_PAGE);
+
         MatchesResponseDTO responseDTO = matchDAO.getFilteredMatches(requestDTO);
         List<Match> matchList = responseDTO.getMatches();
         context.setVariable("matches", matchList);
