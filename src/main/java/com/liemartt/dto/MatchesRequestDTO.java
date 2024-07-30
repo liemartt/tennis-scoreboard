@@ -8,5 +8,4 @@ public class MatchesRequestDTO {
     private Player player;
     private long page;
     private long matchesPerPage;
-    private long totalMatches;
 }
