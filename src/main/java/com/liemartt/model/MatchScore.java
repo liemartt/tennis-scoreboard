@@ -10,39 +10,46 @@ import java.util.UUID;
 @Setter
 @RequiredArgsConstructor
 public class MatchScore {
-    private final Match match;
-    private final PlayerScore firstPlayerScore;
-    private final PlayerScore secondPlayerScore;
+    private final PlayerScore player1Score;
+    private final PlayerScore player2Score;
+    private PlayerScore lastPointWinner;
     private PlayerScore winner;
-    private boolean isFinished;
     private boolean tieBreak;
     private UUID uuid;
 
-    public MatchScore(Match match) {
-        this.match = match;
-        this.firstPlayerScore = new PlayerScore(match.getPlayer1());
-        this.secondPlayerScore = new PlayerScore(match.getPlayer2());
+    public MatchScore(Player player1, Player player2) {
+        this.player1Score = new PlayerScore(player1);
+        this.player2Score = new PlayerScore(player2);
         this.uuid = UUID.randomUUID();
     }
 
-    public Long getPlayer1Id() {
-        return firstPlayerScore.getId();
+    public PlayerScore getPointWinner() {
+        if (player1Score.equals(lastPointWinner)) {
+            return player1Score;
+        } else return player2Score;
     }
 
-    public Long getPlayer2Id() {
-        return secondPlayerScore.getId();
+    public void setPointWinner(Player winner) {
+        if (player1Score.getPlayer().equals(winner)) {
+            lastPointWinner = player1Score;
+        } else if (player2Score.getPlayer().equals(winner)) {
+            lastPointWinner = player2Score;
+        } else {
+            throw new RuntimeException("No such player in this match");
+        }
     }
 
-    public PlayerScore getPointWinner(Long winnerId) {
-        if (firstPlayerScore.getPlayer().getId().equals(winnerId)) {
-            return firstPlayerScore;
-        } else return secondPlayerScore;
+    public PlayerScore getOpponent() {
+        if (!player1Score.equals(lastPointWinner)) {
+            return player1Score;
+        } else return player2Score;
     }
 
-    public PlayerScore getOpponent(Long winnerId) {
-        if (!firstPlayerScore.getPlayer().getId().equals(winnerId)) {
-            return firstPlayerScore;
-        } else return secondPlayerScore;
+    public Player getPlayer1() {
+        return player1Score.getPlayer();
     }
 
+    public Player getPlayer2() {
+        return player2Score.getPlayer();
+    }
 }
