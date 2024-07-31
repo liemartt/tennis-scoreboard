@@ -39,55 +39,55 @@
                 </div>
             </div>
             <div class="player-info">
-                <div class="cell" th:text="${matchScore.getFirstPlayerScore.name}">
+                <div class="cell" th:text="${matchScore.getPlayer1Score.name}">
                     Artem
                 </div>
-                <div class="cell" th:text="${matchScore.getFirstPlayerScore.tieBreaksCounter}">
+                <div class="cell" th:text="${matchScore.getPlayer1Score.tieBreaksCounter}">
                     0
                 </div>
-                <div class="cell" th:text="${matchScore.getFirstPlayerScore.setCounter}">
+                <div class="cell" th:text="${matchScore.getPlayer1Score.setCounter}">
                     0
                 </div>
-                <div class="cell" th:text="${matchScore.getFirstPlayerScore.gameCounter}">
+                <div class="cell" th:text="${matchScore.getPlayer1Score.gameCounter}">
                     0
                 </div>
-                <div class="cell" th:text="${matchScore.getFirstPlayerScore.pointCounter}">
+                <div class="cell" th:text="${matchScore.getPlayer1Score.pointCounter}">
                     0
                 </div>
                 <div class="advantage"
-                     th:class="'advantage '+${matchScore.getFirstPlayerScore.isAdvantage()?'active':' '}">
+                     th:class="'advantage '+${matchScore.getPlayer1Score.isAdvantage()?'active':' '}">
                 </div>
 
             </div>
 
             <div class="player-info">
-                <div class="cell" th:text="${matchScore.getSecondPlayerScore.getName()}">
+                <div class="cell" th:text="${matchScore.getPlayer2Score.getName()}">
                     NOVAK JOKOVIC
                 </div>
-                <div class="cell" th:text="${matchScore.getSecondPlayerScore.tieBreaksCounter}">
+                <div class="cell" th:text="${matchScore.getPlayer2Score.tieBreaksCounter}">
                     0
                 </div>
-                <div class="cell" th:text="${matchScore.getSecondPlayerScore.setCounter}">
+                <div class="cell" th:text="${matchScore.getPlayer2Score.setCounter}">
                     0
                 </div>
-                <div class="cell" th:text="${matchScore.getSecondPlayerScore.gameCounter}">
+                <div class="cell" th:text="${matchScore.getPlayer2Score.gameCounter}">
                     0
                 </div>
-                <div class="cell" th:text="${matchScore.getSecondPlayerScore.pointCounter}">
+                <div class="cell" th:text="${matchScore.getPlayer2Score.pointCounter}">
                     0
                 </div>
                 <div class="advantage"
-                     th:class="'advantage '+${matchScore.getSecondPlayerScore.isAdvantage()?'active':' '}">
+                     th:class="'advantage '+${matchScore.getPlayer2Score.isAdvantage()?'active':' '}">
                 </div>
 
             </div>
         </div>
 
         <form method="post" name="win-buttons" th:action="@{/match-score(uuid=${matchScore.uuid})}">
-            <button name="id" th:text="${matchScore.getFirstPlayerScore.name}" th:value="${matchScore.getFirstPlayerScore.id}"
+            <button name="id" th:text="${matchScore.getPlayer1Score.name}" th:value="${matchScore.getPlayer1Score.id}"
                     type="submit">Artem
             </button>
-            <button name="id" th:text="${matchScore.getSecondPlayerScore.name}" th:value="${matchScore.getSecondPlayerScore.id}"
+            <button name="id" th:text="${matchScore.getPlayer2Score.name}" th:value="${matchScore.getPlayer2Score.id}"
                     type="submit">Vasya
             </button>
         </form>
