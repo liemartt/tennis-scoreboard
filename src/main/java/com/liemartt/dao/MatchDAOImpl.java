@@ -45,6 +45,7 @@ public class MatchDAOImpl implements MatchDAO {
         responseDTO.setMatches(matches);
         responseDTO.setPage(page);
         responseDTO.setTotalPages(Math.ceilDiv(totalMatches, matchesPerPage));
+        session.close();
         return responseDTO;
     }
 
@@ -54,6 +55,7 @@ public class MatchDAOImpl implements MatchDAO {
         session.beginTransaction();
         long total = session.createSelectionQuery("FROM Match", Match.class).stream().count();
         session.getTransaction().commit();
+        session.close();
         return total;
     }
 
@@ -63,6 +65,7 @@ public class MatchDAOImpl implements MatchDAO {
         session.beginTransaction();
         session.persist(match);
         session.getTransaction().commit();
+        session.close();
         return match;
     }
 }

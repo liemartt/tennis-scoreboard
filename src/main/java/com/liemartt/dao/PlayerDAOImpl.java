@@ -18,6 +18,7 @@ public class PlayerDAOImpl implements PlayerDAO {
                         .setParameter("name", name)
                         .getResultList();
         session.getTransaction().commit();
+        session.close();
         return players.isEmpty() ? Optional.empty() : Optional.of(players.get(0));
     }
 
@@ -27,6 +28,7 @@ public class PlayerDAOImpl implements PlayerDAO {
         session.beginTransaction();
         session.persist(player);
         session.getTransaction().commit();
+        session.close();
         return player;
     }
 
