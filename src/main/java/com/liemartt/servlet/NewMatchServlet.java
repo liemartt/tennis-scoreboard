@@ -2,11 +2,8 @@ package com.liemartt.servlet;
 
 import com.liemartt.dao.PlayerDAO;
 import com.liemartt.dao.PlayerDAOImpl;
-import com.liemartt.model.Match;
 import com.liemartt.model.Player;
-import com.liemartt.service.OngoingMatchesService;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,13 +14,13 @@ import java.util.UUID;
 @WebServlet(urlPatterns = "/new-match")
 public class NewMatchServlet extends AbstractServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         initializeServlet(req, resp);
         templateEngine.process("new-match", context, resp.getWriter());
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         PlayerDAO playerDAO = new PlayerDAOImpl();
         initializeServlet(req, resp);
 
@@ -45,7 +42,7 @@ public class NewMatchServlet extends AbstractServlet {
                         .getPlayerByName(secondPlayerName)
                         .orElseGet(() -> playerDAO.savePlayer(new Player(secondPlayerName)));
 
-        UUID uuid = OngoingMatchesService.addNewMatch(new Match(firstPlayer, secondPlayer));
+        UUID uuid = ongoingMatchesService.addNewMatch(firstPlayer, secondPlayer);
         resp.sendRedirect("/match-score?uuid=" + uuid.toString());
     }
 }
