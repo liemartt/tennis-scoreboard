@@ -11,25 +11,25 @@ public class PlayerDAOImpl implements PlayerDAO {
 
     @Override
     public Optional<Player> getPlayerByName(String name) {
-        Session session = DBUtil.getSession();
-        session.beginTransaction();
-        List<Player> players =
-                session.createSelectionQuery("FROM Player WHERE name = :name", Player.class)
-                        .setParameter("name", name)
-                        .getResultList();
-        session.getTransaction().commit();
-        session.close();
-        return players.isEmpty() ? Optional.empty() : Optional.of(players.get(0));
+        try (Session session = DBUtil.getSession()) {
+            session.beginTransaction();
+            List<Player> players =
+                    session.createSelectionQuery("FROM Player WHERE name = :name", Player.class)
+                            .setParameter("name", name)
+                            .getResultList();
+            session.getTransaction().commit();
+            return players.isEmpty() ? Optional.empty() : Optional.of(players.get(0));
+        }
     }
 
     @Override
     public Player savePlayer(Player player) {
-        Session session = DBUtil.getSession();
-        session.beginTransaction();
-        session.persist(player);
-        session.getTransaction().commit();
-        session.close();
-        return player;
+        try (Session session = DBUtil.getSession()) {
+            session.beginTransaction();
+            session.persist(player);
+            session.getTransaction().commit();
+            return player;
+        }
     }
 
 }
